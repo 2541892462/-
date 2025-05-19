@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>数字基础设施与碳减排</title>
+		<style>
+			:root { --primary-color: #2c3e50; --secondary-color: #3498db; --text-color: #333; } * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; } /* 共用样式 */ section { padding: 2rem; margin: 1rem auto; max-width: 1200px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); border-radius: 8px; } h2 { color: var(--primary-color); margin-bottom: 3rem; text-align: center; } /* 热点新闻板块 */ .news-section { background: #fff; } .video-container { position: relative; padding-bottom: 56.25%; /* 16:9比例 */ height: 0; overflow: hidden; margin: 1rem 0; border-radius: 8px; } .news-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; } /* 登录板块 */ .login-section { background: #f9f9f9; display: flex; justify-content: center; align-items: center; min-height: 400px; } .login-form { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1); width: 100%; max-width: 400px; } .form-group { margin-bottom: 1.5rem; } input[type="text"], input[type="password"] { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; } button { background: var(--secondary-color); color: white; border: none; padding: 1rem 2rem; border-radius: 4px; cursor: pointer; transition: background 0.3s; } button:hover { background: #2980b9; } /* 轮播图板块 */ .carousel-section { position: relative; overflow: hidden; height: 400px; background: #eee; } .carousel-inner { position: relative; width: 100%; height: 100%; } .carousel-item { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 1s ease; } .carousel-item.active { opacity: 1; } .carousel-item img { width: 100%; height: 100%; object-fit: cover; } .carousel-control { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.5); color: white; border: none; padding: 1rem; cursor: pointer; z-index: 10; } .carousel-prev { left: 10px; } .carousel-next { right: 10px; }
+			
+			.carousel {
+				position: relative;
+				width: 100%;
+				height: 500px;
+				margin-top: 60px;
+			
+			}
+			
+			 * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* 固定导航栏样式 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 1rem 2rem;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: #666;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #2c3e50;
+        }
+
+        /* 内容区域调整 */
+        .content-section {
+            margin-top: 60px; /* 导航栏高度补偿 */
+            padding: 2rem;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .nav-link {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* 移动端汉堡菜单（可选） */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 480px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+        }
+			
+			body {
+				font-family: Arial, sans-serif;
+				margin: 0;
+				padding: 0;
+				background-color: #f4f4f4;
+			}
+			
+			nav {
+				background-color: var(--primary-color);
+				padding: 1rem;
+				position: fixed;
+				width: 100%;
+				top: 0;
+			}
+			
+			nav a {
+				color: white;
+				text-decoration: none;
+				margin: 0 1rem;
+			}
+			 .auth-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .auth-tabs {
+            display: flex;
+            border-bottom: 2px solid #eee;
+            margin-bottom: 2rem;
+        }
+
+        .tab-button {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .tab-button.active {
+            color: var(--secondary-color);
+            border-bottom: 3px solid var(--secondary-color);
+            margin-bottom: -2px;
+        }
+
+        .auth-form {
+            display: none;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+        }
+
+        .password-toggle {
+            position: relative;
+        }
+
+        .toggle-visibility {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+        }
+
+        .auth-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        button {
+            flex: 1;
+            padding: 1.2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        .switch-form {
+            background: none;
+            border: none;
+            color: var(--secondary-color);
+            cursor: pointer;
+            margin-top: 1rem;
+            text-decoration: underline;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .success-message {
+            color: var(--success-color);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+    
+	   .container {
+            max-width: 1200px;
+            margin: 80px auto 20px;
+            padding: 20px;
+        }
+
+        .panel-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .auth-panel, .search-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            flex: 1;
+            min-width: 300px;
+        }
+         .carousel-section {
+          margin-top: 4rem;
+        }
+        .activity-panel {
+            margin-top: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+           .comment-section {
+            margin-top: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+     
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .activity-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; } 
+        .activity-card { padding: 15px; border: 1px solid #ddd; border-radius: 8px; } .comment { border-bottom: 1px solid #eee; padding: 10px 0; }
+        
+         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* 视频网格容器 */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 单个视频卡片 */
+        .video-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* 视频内容区 */
+        .video-content {
+            padding: 1.5rem;
+        }
+
+        /* 视频标题样式 */
+        .video-title {
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+            font-size: 1.4rem;
+        }
+
+        /* 视频描述样式 */
+        .video-desc {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+        }
+
+        /* 响应式视频尺寸 */
+        .responsive-video {
+            width: 100%;
+            height: 200px;
+            background: #000;
+            border-radius: 6px;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .video-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            
+            .responsive-video {
+                height: 160px;
+            }
+        }
+   
+		</style>
+	</head>
+
+	<body>
+	    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">LOGO</a>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link">首页</a></li>
+                <li><a href="#news" class="nav-link">热点新闻</a></li>
+                <li><a href="#login" class="nav-link">企业碳排放</a></li>
+                <li><a href="#register" class="nav-link">企业碳中和 </a></li>
+            </ul>
+            <button class="menu-toggle">☰</button>
+        </div>
+        </nav>
+		
+    <script>
+        // 移动端菜单切换
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // 滚动时导航栏样式变化（可选）
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.15)';
+            } else {
+                navbar.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+            }
+        });
+    </script>
+	
+		
+		<!-- 图片轮换板块 -->
+		<section class="carousel-section">
+			<div class="carousel-inner">
+				<div class="carousel-item active">
+					<img src="img/R-C (1).jpg" alt="图片1">
+				</div>
+				<div class="carousel-item">
+					<img src="img/R-C.jpg" alt="图片2">
+				</div>
+				<div class="carousel-item">
+					<img src="img/R-C.png" alt="图片3">
+				</div>
+			</div>
+			<button class="carousel-control carousel-prev">❮</button>
+			<button class="carousel-control carousel-next">❯</button>
+		</section>
+		
+		<script>
+			// 轮播图功能
+			let currentIndex = 0;
+			const items = document.querySelectorAll('.carousel-item');
+			const prevBtn = document.querySelector('.carousel-prev');
+			const nextBtn = document.querySelector('.carousel-next');
+		
+			function showSlide(n) {
+				items[currentIndex].classList.remove('active');
+				currentIndex = (n + items.length) % items.length;
+				items[currentIndex].classList.add('active');
+			}
+		
+			function nextSlide() {
+				showSlide(currentIndex + 1);
+			}
+		
+			function prevSlide() {
+				showSlide(currentIndex - 1);
+			}
+		
+			// 自动轮播
+			setInterval(nextSlide, 5000);
+		
+			// 手动控制
+			prevBtn.addEventListener('click', prevSlide);
+			nextBtn.addEventListener('click', nextSlide);
+		
+			// 登录表单验证
+			document.getElementById('loginForm').addEventListener('submit', (e) => {
+				e.preventDefault();
+				const username = e.target[0].value;
+				const password = e.target[1].value;
+		
+				if(username && password) {
+					alert(`登录成功！\n用户名：${username}`);
+					e.target.reset();
+				}
+			});
+		</script>
+		
+			 <section class="auth-container">
+        <h2 class="section-title">用户认证</h2>
+        <div class="auth-tabs">
+            <button class="tab-button active" data-target="login">登录</button>
+            <button class="tab-button" data-target="register">注册</button>
+        </div>
+
+        <!-- 登录表单 -->
+        <form class="auth-form active" id="loginForm">
+            <div class="form-group">
+                <input type="text" placeholder="用户名" required id="loginUsername">
+                <div class="error-message" id="loginUsernameError"></div>
+            </div>
+            <div class="form-group password-toggle">
+                <input type="password" placeholder="密码" required id="loginPassword">
+                <span class="toggle-visibility">👁️</span>
+                <div class="error-message" id="loginPasswordError"></div>
+            </div>
+            <div class="auth-actions">
+                <button type="submit">登录</button>
+                <button type="button" class="switch-form">没有账号？立即注册</button>
+            </div>
+            <div class="success-message" id="loginSuccess"></div>
+        </form>
+
+        <!-- 注册表单 -->
+        <form class="auth-form" id="registerForm">
+            <div class="form-group">
+                <input type="text" placeholder="用户名" required id="registerUsername">
+                <div class="error-message" id="registerUsernameError"></div>
+            </div>
+            <div class="form-group">
+                <input type="email" placeholder="电子邮箱" required id="registerEmail">
+                <div class="error-message" id="registerEmailError"></div>
+            </div>
+            <div class="form-group password-toggle">
+                <input type="password" placeholder="密码" required id="registerPassword">
+                <span class="toggle-visibility">👁️</span>
+                <div class="error-message" id="registerPasswordError"></div>
+            </div>
+            <div class="form-group password-toggle">
+                <input type="password" placeholder="确认密码" required id="confirmPassword">
+                <span class="toggle-visibility">👁️</span>
+                <div class="error-message" id="confirmPasswordError"></div>
+            </div>
+            <div class="auth-actions">
+                <button type="submit">立即注册</button>
+                <button type="button" class="switch-form">已有账号？立即登录</button>
+            </div>
+            <div class="success-message" id="registerSuccess"></div>
+        </form>
+    </section>
+
+    <script>
+        // 标签页切换
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const target = button.dataset.target;
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
+                
+                button.classList.add('active');
+                document.getElementById(target + 'Form').classList.add('active');
+            });
+        });
+
+        // 密码显示切换
+        document.querySelectorAll('.toggle-visibility').forEach(icon => {
+            icon.addEventListener('click', () => {
+                const input = icon.previousElementSibling;
+                const type = input.type === 'password' ? 'text' : 'password';
+                input.type = type;
+                icon.textContent = type === 'password' ? '👁️' : '👁️🗨️';
+            });
+        });
+
+        // 表单验证
+        function showError(element, message) {
+            const errorDiv = element.parentElement.querySelector('.error-message');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        function hideError(element) {
+            const errorDiv = element.parentElement.querySelector('.error-message');
+            errorDiv.style.display = 'none';
+        }
+
+        // 登录表单验证
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername');
+            const password = document.getElementById('loginPassword');
+
+            if (!username.value) showError(username, '请输入用户名');
+            if (!password.value) showError(password, '请输入密码');
+
+            // 模拟登录成功
+            setTimeout(() => {
+                document.getElementById('loginSuccess').textContent = '登录成功！';
+                document.getElementById('loginSuccess').style.display = 'block';
+            }, 1000);
+        });
+
+        // 注册表单验证
+        document.getElementById('registerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('registerUsername');
+            const email = document.getElementById('registerEmail');
+            const password = document.getElementById('registerPassword');
+            const confirmPassword = document.getElementById('confirmPassword');
+
+            if (!username.value) showError(username, '请输入用户名');
+            if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) showError(email, '请输入有效邮箱');
+            if (password.value !== confirmPassword.value) showError(confirmPassword, '两次输入密码不一致');
+
+            // 模拟注册成功
+            setTimeout(() => {
+                document.getElementById('registerSuccess').textContent = '注册成功！即将跳转...';
+                document.getElementById('registerSuccess').style.display = 'block';
+            }, 1000);
+        });
+    </script>
+			<div class="search-panel">
+				<h2>碳减排搜索</h2>
+				<input type="text" placeholder="搜索减排方案...">
+				<br /><br />
+				 <div class="copyright" align="right">
+				    <button >搜索</button>
+				 </div>
+			</div>
+		</div>
+
+		<!-- 活动面板 -->
+		<div class="activity-panel">
+			<h2>最新碳中和活动</h2>
+			<div class="activity-grid">
+				<div class="activity-card">
+					<h3>数据中心节能技术研讨会</h3>
+					<p>日期：2025-2-1</p>
+					<p>探讨数字基础设施的能效优化方案</p>
+				</div>
+				<div class="activity-card">
+					<h3>绿色云计算论坛</h3>
+					<p>日期：2025-3-10</p>
+					<p>云计算与碳足迹管理的最佳实践</p>
+				</div>
+				<div class="activity-card">
+					<h3>新能源助推经济峰会</h3>
+					<p>日期：2025-04-7</p>
+					<p>研究新能源对经济助力的发展前景</p>
+				</div>
+			</div>
+		</div>
+	    <section class="video-section">
+            <h2 class="section-title">热点视频推荐</h2>
+            <div class="video-grid">
+            <!-- 视频卡片1 -->
+            <div class="video-card">
+                <video class="responsive-video" controls>
+                    <source src="r000018zq4b.Rwua10004.mp4" type="video/mp4">
+                    您的浏览器不支持视频播放
+                </video>
+                <div class="video-content">
+                    <h3 class="video-title">新能源的千万里程碑</h3>
+                    <p class="video-desc">“汽”势如虹 国产汽车一路向前...</p>
+                </div>
+            </div>
+
+            <!-- 视频卡片2 -->
+            <div class="video-card">
+                <video class="responsive-video" controls>
+                    <source src="z000052n0rz.cxDF10004.mp4" type="video/mp4">
+                    您的浏览器不支持视频播放
+                </video>
+                <div class="video-content">
+                    <h3 class="video-title">新能源电桩</h3>
+                    <p class="video-desc">多地涌现新能源燃料加注站，并宣称其燃料价格低且完全可以替代汽柴油...</p>
+                </div>
+            </div>
+
+            <!-- 视频卡片3 -->
+            <div class="video-card">
+                <video class="responsive-video" controls>
+                    <source src="e000057znsi.mrXv10004.mp4" type="video/mp4">
+                    您的浏览器不支持视频播放
+                </video>
+                <div class="video-content">
+                    <h3 class="video-title">中国新能源技术引领</h3>
+                    <p class="video-desc">柴达木盆地正在成为全球新能源技术追风逐日的大舞台...</p>
+                </div>
+            </div>
+            </div>
+        </section>
+
+		<!-- 版权声明 -->
+		<div class="copyright" align="center">
+			© 2025 零压力“碳”版权所有<br>
+			<span style="font-size:0.9em">联系我们: contact 1472906642@qq.com</span>
+		</div>
+	</div>
+	+
